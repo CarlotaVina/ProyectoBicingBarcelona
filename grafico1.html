@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<style>
+
+  .chart rect {
+    fill: steelblue;
+ }
+ 
+ .chart text {
+  fill: white;
+  font: 10px sans-serif;
+  text-anchor: end;
+ }
+ 
+</style>
+<svg class="chart"></svg>
+<script src="http://d3js.org/d3.v3.min.js"></script>
+<script>
+
+var datos = new Array();
+var indice = 0;
+
+var width = 420,
+    barHeight = 20; 
+
+var x = d3.scale.linear()
+      .range([0, width]);
+
+ var chart = d3.select(".chart")
+        .attr("width", width);
+     
+
+
+d3.tsv("/csv/totalbicis7.csv", type, function(error,data) {
+   console.log("antes de indice "+indice);
+  x.domain([0, d3.max(data, function(d) {
+   // datos[indice]=d;
+   //indice = indice + 1;
+   console.log("data "+data+" d "+d);
+   return d })]);
+ 
+console.log("paso 1 data "+data.length+" data "+data );
+chart.attr("height", barHeight * data.length);
+ 
+ console.log("paso 2 barra");
+ var bar = chart.selectAll("g")
+   .data(data)
+  .enter().append("g")
+  .attr("transform", function(d, i) { 
+  console.log("d "+d+" barHeight "+barHeight);
+  return "translate(0," + i * barHeight + ")"; });
+  
+  console.log("paso 3 barra ");
+  
+  bar.append("rect")
+    .attr("width", function(d) { 
+       console.log("paso 4 x(d) "+x(d)+" barHeight "+barHeight+" d "+d);
+        return x(d); })
+   .attr("height", barHeight - 1);
+   
+  console.log("paso 4 antes texto ");
+  
+  bar.append("text")
+     .attr("x", function(d) {
+      return x(d) - 3; })
+     .attr("y", barHeight / 2)
+     .attr("dy", ".35em")
+     .text(function(d) {return d; });
+    
+    console.log("paso 5 despues texto");
+ });
+  
+  function type(d) {
+      var elemento = JSON.stringify(d);
+      var elemento3 = '\'' + elemento + '\'';
+      len3 = elemento3.length;
+      var len = elemento3.length;
+      var posicion = elemento3.indexOf(':'); 
+      var posicion1 = posicion + 2;
+      var len11  =parseInt(len);
+      var len1 = len11 - 3;
+      var elemento4 = elemento3.replace("\"","");
+      var elemento1 = elemento3.substr(posicion1,len1);
+      var elemento4 = elemento1.replace("\"","");
+      var elemento4 = elemento4.replace("\}","");
+      var elemento4 = elemento4.replace("\'","");
+      console.log("d antes suma elemento 4 " +d+" elemento4 "+elemento4);
+      d = parseInt(elemento4);
+      d = parseInt(d);
+      console.log("d despues  suma elemento 4 " +d+" elemento4 "+elemento4);
+      //return elemento4;
+      console.log("type antes "+d+" elemento "+elemento+" elemento4 "+elemento4);
+      console.log("type antes values "+d.value);
+      //d = d + d;
+      console.log("type despues "+d);
+      return d;
+      retu
+ }
+        
+ 
+</script>
